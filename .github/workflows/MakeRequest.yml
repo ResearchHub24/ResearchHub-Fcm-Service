@@ -3,15 +3,19 @@ name: Make GET Request
 on:
   schedule:
     - cron: '*/14 * * * *'
+  workflow_dispatch:
 
 jobs:
   make-request:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Check time and Make GET request using curl
-        if: ${{ github.event.schedule == 'cron' && (format('%.2H', now()) >= '07' || format('%.2H', now()) <= '02') }}
+      - name: Get current time
+        id: current-time
+        run: echo "::set-output name=hour::$(date +'%H')"
+
+      - name: Make GET request using curl
+        if: ${{ github.event_name == 'schedule' && (steps.current-time.outputs.hour >= '07' || steps.current-time.outputs.hour <= '02') || github.event_name == 'workflow_dispatch' }}
         run: curl -X GET https://researchhub-fcm-service.onrender.com/
