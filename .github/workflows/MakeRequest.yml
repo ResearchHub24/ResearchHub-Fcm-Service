@@ -12,5 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Make GET request using curl
+      - name: Check time and Make GET request using curl
+        if: ${{ github.event.schedule == 'cron' && (format('%.2H', now()) >= '07' || format('%.2H', now()) <= '02') }}
         run: curl -X GET https://researchhub-fcm-service.onrender.com/
