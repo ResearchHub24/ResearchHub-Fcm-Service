@@ -1,0 +1,16 @@
+name: Make GET Request
+
+on:
+  schedule:
+    - cron: '*/14 * * * *'
+
+jobs:
+  make-request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Make GET request using curl
+        run: curl -X GET https://researchhub-fcm-service.onrender.com/
