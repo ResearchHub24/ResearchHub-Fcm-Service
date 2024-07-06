@@ -13,8 +13,12 @@ import io.ktor.server.routing.*
 fun Route.sendFacultyNotification() {
     route("/send/topics/FacultiesNotifications") {
         post {
-            val body = call.receiveNullable<NotificationModel>() ?: kotlin.run {
+            val body = this.call.receiveNullable<NotificationModel>() ?: kotlin.run {
                 call.respond(status = HttpStatusCode.BadRequest, message = "Invalid body")
+                return@post
+            }
+            if (body.message.topic.isNullOrBlank()) {
+                call.respond(status = HttpStatusCode.BadRequest, message = "Topic must be provided")
                 return@post
             }
             FirebaseMessaging.getInstance()
@@ -47,6 +51,10 @@ fun Route.sendResearchNotification() {
         post {
             val body = call.receiveNullable<NotificationModel>() ?: kotlin.run {
                 call.respond(status = HttpStatusCode.BadRequest, message = "Invalid body")
+                return@post
+            }
+            if (body.message.topic.isNullOrBlank()) {
+                call.respond(status = HttpStatusCode.BadRequest, message = "Topic must be provided")
                 return@post
             }
             FirebaseMessaging.getInstance()

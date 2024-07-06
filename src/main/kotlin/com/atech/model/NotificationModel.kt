@@ -16,7 +16,7 @@ data class NotificationModel(
 
 @Serializable
 data class MessageSend(
-    val topic: String,
+    val topic: String? = null,
     val to: String? = null,
     val notification: NotificationSend,
     val data: Data
