@@ -1,8 +1,8 @@
 name: Make GET Request
 
 on:
-  schedule:
-    - cron: '*/14 * * * *'
+  # schedule:
+  #   - cron: '*/14 * * * *'
   workflow_dispatch:
 
 jobs:
